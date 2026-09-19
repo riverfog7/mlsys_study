@@ -1,0 +1,19 @@
+[project]
+name = "mlsys-study"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "jupyter>=1.1.1",
+    "matplotlib>=3.9.4",
+    "notebook>=7.5.7",
+    "numpy>=2.0.2",
+    "plotly>=7.1.0",
+    "seaborn>=0.13.2",
+    "tokenizers>=0.22.2",
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+    "torchvista>=0.2.13",
+    "transformers>=4.57.6",
+]
