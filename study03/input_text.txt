@@ -1,0 +1,82 @@
+On Monday morning, a research group met in a small university library to plan a
+presentation about language models. They wanted the presentation to begin with
+something concrete: a paragraph of ordinary text, a model that people could
+recognize, and a measurement that everyone could inspect. Rather than starting
+with a collection of performance claims, they decided to follow one document
+through the system. Each person brought a different question. One wanted to
+understand the vocabulary. Another wanted to know how the model combined
+information from different positions. A third was interested in the time spent
+waiting for results when the document became longer.
+
+The librarian suggested using a report from a community project. The report
+described the renovation of an old railway station into a public meeting place.
+It included descriptions of the building, interviews with residents, construction
+schedules, and a discussion of how the surrounding streets had changed. A short
+excerpt introduced the project, while later paragraphs explained the decisions
+in greater detail. This made the document useful for comparing short and long
+inputs. The group could take increasingly long prefixes of the same document
+without changing the beginning or adding unrelated material between experiments.
+
+Before discussing the model, the group examined the text itself. Words were not
+always represented by single tokens. Some common words formed one token, while
+longer or less common expressions were divided into several pieces. Spaces and
+punctuation also affected the token sequence. The participants wrote down the
+number of tokens and kept the token identifiers fixed for each experiment. They
+agreed that comparisons would be easier to interpret if the same inputs were
+used every time. They also kept a readable preview of the document so that the
+numbers did not become detached from the text that produced them.
+
+The first model run was treated as preparation. Loading the weights, creating a
+CUDA context, and selecting library routines could all take time before the
+machine reached its usual behavior. The group therefore ran the model several
+times before recording measurements. During the measured runs, they left the
+model in evaluation mode and did not ask it to compute gradients. They used one
+document at a time. After each group of repeated runs, they compared the results
+and checked that the output remained consistent. A single unusually fast or
+slow observation would not be presented as the typical result.
+
+At lunch, the discussion returned to the station renovation. One resident had
+argued for retaining the original waiting room, while another had proposed
+opening the central wall to create a larger public space. The final design kept
+the historical entrance and placed a new reading area beside it. This example
+helped the students talk about context. A sentence near the end of a document
+could depend on a name, a proposal, or a decision introduced much earlier. The
+model needed a way to combine information from different positions, and the
+participants wanted to see the actual operations involved in that process.
+
+In the afternoon, the group looked at an execution trace. It contained many small
+operations as well as several large matrix multiplications. Some operations
+prepared values, some changed their shape, and others combined them. The trace
+was not a drawing of an abstract architecture. It was a record of work that had
+actually been submitted to the graphics processor. The students followed the
+first block and identified the operations associated with attention. They kept
+the surrounding projections visible because removing those operations from the
+picture would make the measured block different from the one in the model.
+
+One participant asked whether a large allocation automatically meant that an
+operation was slow. The group decided to keep those questions separate. Storage
+size described how much space a tensor occupied, while execution time described
+how long a particular operation took. Data could sometimes be served from a
+cache rather than from external memory. A hardware counter could provide another
+view by recording traffic at a particular part of the memory system. The group
+added these measurements to the trace, taking care to label which numbers came
+from the ordinary run and which came from the more detailed profiling session.
+
+They also discussed the limits of the experiment. A small model on one graphics
+card did not represent every language model deployment. Processing an entire
+document at once was different from generating a single new token while reusing
+previous state. Different numeric formats could change both the selected kernels
+and the amount of data moved. The students recorded their settings alongside the
+figures so that another reader could repeat the experiment or change one setting
+at a time. They wanted the figures to support a specific observation rather than
+to stand in for a universal claim about all models and all hardware.
+
+By the end of the day, the presentation had a clear starting point. It would show
+the input document, the time required by the complete forward pass, and a closer
+view of one attention block. The group would explain unfamiliar operations only
+when they appeared in the measured execution. If an operation occupied a large
+part of the trace, they would investigate its data access and arithmetic before
+suggesting a change. If an expected bottleneck did not appear, they would report
+that result as well. The purpose of the exercise was to understand the machine
+that was actually running in front of them and to build explanations from its
+observed behavior.
